@@ -1,18 +1,21 @@
-FROM manimcommunity/manim:stable
+# Start from the official Manim image
+FROM manimcommunity/manim:latest
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+# Switch to root user for all operations
+USER root
 
+# Set up application directory
 WORKDIR /app
 
-# Install Python dependencies
+# Install uvicorn explicitly along with other dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt uvicorn
 
-# Copy application code
+# Copy your application code
 COPY . .
 
-# Run the application
-CMD ["uvicorn", "server.server:app", "--host", "0.0.0.0", "--port", "8000"]
+# Create logs directory
+RUN mkdir -p /app/logs && chmod 777 /app/logs
+
+# Run the application as root
+CMD ["python", "-m", "uvicorn", "server.server:app", "--host", "0.0.0.0", "--port", "8000"]
