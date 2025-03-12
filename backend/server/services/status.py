@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 def initialize_firebase():
-    cred_path = Path("../firebase_creds.json")
+    ##tried parent, didnt work,sure
+    cred_path = Path("firebase_creds.json")
     if not cred_path.exists():
         raise FileNotFoundError(
             f"Firebase credentials not found at {cred_path}. Place the service account key file there."
