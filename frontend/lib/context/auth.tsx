@@ -9,7 +9,6 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
-
   signInWithEmailAndPassword,
   signInWithRedirect,
   signOut,
