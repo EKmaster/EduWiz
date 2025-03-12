@@ -12,40 +12,37 @@ logger = logging.getLogger(__name__)
 
 
 def initialize_firebase():
-    firebase_creds = os.getenv("FIREBASE_CREDENTIALS")
+    cred_path = Path("firebase_creds.json")
+    if not cred_path.exists():
+        raise FileNotFoundError(
+            f"Firebase credentials not found at {cred_path}. Place the service account key file there."
+        )
 
-    if not firebase_creds:
-        raise FileNotFoundError("Firebase credentials not found in environment variables.")
-
-    # Load credentials from environment variable
-    cred_data = json.loads(firebase_creds)
-    cred = credentials.Certificate(cred_data)
+    cred = credentials.Certificate(cred_path)
 
     # Get project_id from credentials
-    project_id = cred_data["project_id"]
+    with open(cred_path) as f:
+        cred_data = json.load(f)
+        project_id = cred_data["project_id"]
 
     firebase_config = {"databaseURL": f"https://{project_id}.firebaseio.com"}
 
     # Connect to emulator if not in production
     if os.getenv("NODE_ENV") != "production":
-        firebase_local_path = Path("/app/firebase.json")
+        with open("/app/firebase.json", "r") as f:
+            firebase_local = json.load(f)
 
-        if firebase_local_path.exists():
-            with open(firebase_local_path, "r") as f:
-                firebase_local = json.load(f)
+        emulator_host = (
+            "host.docker.internal" if os.getenv("RUNNING_IN_DOCKER") else "localhost"
+        )
 
-            emulator_host = (
-                "host.docker.internal" if os.getenv("RUNNING_IN_DOCKER") else "localhost"
-            )
+        firebase_config["databaseURL"] = (
+            f"http://{emulator_host}:{firebase_local['emulators']['database']['port']}?ns={project_id}"
+        )
 
-            firebase_config["databaseURL"] = (
-                f"http://{emulator_host}:{firebase_local['emulators']['database']['port']}?ns={project_id}"
-            )
-
-            logger.info(f"Using Firebase emulator at {firebase_config['databaseURL']}")
+        logger.info(f"Using Firebase emulator at {firebase_config['databaseURL']}")
 
     firebase_admin.initialize_app(cred, firebase_config)
-
 
 
 async def listen_status_updates():
