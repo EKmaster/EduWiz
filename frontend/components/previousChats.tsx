@@ -1,8 +1,6 @@
 "use client"
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-    SidebarMenuButton,
-} from "@/components/ui/sidebar"
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
@@ -11,7 +9,7 @@ interface Chat {
     id: number,
     title: string
 }
-const getUserPastChats = async (userID: string): Promise<Chat[]> => {
+const getUserPastChats = async (): Promise<Chat[]> => {
     const s = { id: 12312, title: "Aerodynamics" };
     const r = { id: 133, title: "Pascal's triangle" };
     const t = { id: 9393, title: "Complex numbers" };
@@ -19,13 +17,13 @@ const getUserPastChats = async (userID: string): Promise<Chat[]> => {
     // TODO: load past videos the user viewed here
 }
 
-const PreviousChats = ({ userID }: { userID: string }) => {
+const PreviousChats = ({ }: { userID: string }) => {
     const [previousChats, setPreviousChats] = useState<Chat[]>([]);
     const router = useRouter();
 
     useEffect(() => {
         const updatePrevChats = async () => {
-            setPreviousChats(await getUserPastChats(userID));
+            setPreviousChats(await getUserPastChats());
         }
         updatePrevChats();
     }, [])

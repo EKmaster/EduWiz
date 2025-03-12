@@ -9,7 +9,7 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
-  sendEmailVerification,
+
   signInWithEmailAndPassword,
   signInWithRedirect,
   signOut,
@@ -32,12 +32,15 @@ type ProviderData = {
   provider: AuthProvider;
   icon: React.ReactElement;
 };
+interface AuthorizationProviderProps {
+  children: React.ReactNode;
+}
 
 const UserAuthorization = createContext<AuthorizationContext>(
   {} as AuthorizationContext
 );
 
-function AuthorizationProvider({ children }: any) {
+function AuthorizationProvider({ children }: AuthorizationProviderProps) {
   const [user, loading, error] = useAuthState(auth);
 
   const providers: ProviderData[] = [

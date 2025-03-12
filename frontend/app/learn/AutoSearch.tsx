@@ -10,7 +10,7 @@ interface SearchResult {
     date: Date
 }
 
-const getSearchResults = async (query: string): Promise<SearchResult[]> => {
+const getSearchResults = async (): Promise<SearchResult[]> => {
     // TODO: THESE ARE MOCK SEARCH RESULTS, THEY WILL NEED TO BE RETURNED
     const s = { id: 12312, title: "Pythogorean theorem", date: new Date() };
     const r = { id: 133, title: "Newton's first law", date: new Date() };
@@ -24,7 +24,7 @@ const AutoSearch = ({ query }: { query: string }) => {
 
     useEffect(() => {
         const updateSearchResults = async () => {
-            setResults(await getSearchResults(query));
+            setResults(await getSearchResults());
         }
         updateSearchResults();
     }, [query])
@@ -38,7 +38,7 @@ const AutoSearch = ({ query }: { query: string }) => {
                             <li key={index} className="mb-2">
                                 <Button
                                     className="h-full w-full justify-start bg-secondary text-foreground hover:bg-background border"
-                                    onClick={(e) => {
+                                    onClick={() => {
                                         router.push("/")
                                         {/*TODO: update this so that it pushes to the correct page*/ }
                                     }}

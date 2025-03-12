@@ -12,12 +12,12 @@ import { Send, Clapperboard } from 'lucide-react';
 
 
 export default function Home() {
-    const router = useRouter()
+    
 
     const [prompt, setPrompt] = useState("");
     const jobIDRef = useRef<string | null>(null)
     const [videoGenerationState, setVideoGenerationState] = useState(0); // 0 = not started, 1 = generating, 2 = completed, -1 = error
-    const jobStatusRef = useRef<string | null>(null)
+    
     const [jobStatus, setJobStatus] = useState<string | null>(null)
     const unsubscribeJobStatus = useRef<() => void | null>(null)
 
@@ -55,22 +55,7 @@ export default function Home() {
     }
 
 
-    useEffect(() => {
-        // setting up the page based on whether or not it's for an existing video or a new one
-        const setupPage = async () => {
-            // TODO: setup page if a video id was already provided, load in that video
-            /*
-            const validVideoID = await videoExists(videoID)
-            if (validVideoID) {
-
-            }  else if (validVideoID === false){
-
-            }
-            // do nothing if there is no valid video id provided
-            */
-        }
-        //setupPage();
-    }, [])
+    
 
     return (
         <main className="h-screen">

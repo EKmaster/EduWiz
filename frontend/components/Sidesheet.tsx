@@ -3,8 +3,7 @@ import {
     SheetContent,
     SheetDescription,
     SheetHeader,
-    SheetTitle,
-    SheetTrigger,
+    SheetTitle
 } from "@/components/ui/sheet"
 import PreviousChats from "./previousChats"
 import { Button } from "@/components/ui/button";
