@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM manimcommunity/manim:stable
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
