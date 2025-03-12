@@ -1,6 +1,6 @@
 "use client"
-import React, {useState} from "react";
-import { Loader2 } from "lucide-react";
+import React from "react";
+
 
 const VideoLoadingScreen = ({ loadingStatus }: { loadingStatus: string | null }) => {
     
