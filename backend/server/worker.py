@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
-JOB_LIMIT = 10
+JOB_LIMIT = 1
 
 
 class RabbitMQConnection:
