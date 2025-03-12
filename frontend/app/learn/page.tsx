@@ -43,7 +43,7 @@ export default function Home() {
                 }
             })
             setVideoGenerationState(1)
-        } catch (error) {
+        } catch (error:unknown) {
             setVideoGenerationState(0);
             console.error("Error sending prompt to server", error);
         } finally {
