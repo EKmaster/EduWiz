@@ -7,6 +7,7 @@ from server.logger import setup_logger
 from server.routes import health, video
 from server.services.rabbitmq import RabbitMQConnection
 from server.services.status import listen_status_updates
+from .worker import RenderManager
 
 
 setup_logger()
@@ -20,6 +21,8 @@ async def lifespan(_: FastAPI):
     rabbit_conn = rabbit_conn.connect()
     logger.info("RabbitMQ connection initialized")
     asyncio.create_task(listen_status_updates())
+    manager = RenderManager()
+    asyncio.create_task(manager.run())
     yield
     rabbit_conn.close()
 

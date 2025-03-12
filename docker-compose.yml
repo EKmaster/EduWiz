@@ -23,30 +23,12 @@ services:
       - RUNNING_IN_DOCKER=true
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
-      - ./videos:/shared/videos:ro
+      - ./videos:/shared/videos
     extra_hosts:
       - "host.docker.internal:host-gateway" # remove after testing
     depends_on:
       rabbitmq:
         condition: service_healthy
-
-  renderer:
-    build: 
-      context: ./renderer
-      dockerfile: Dockerfile
-    environment:
-      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
-      - OUTPUT_PATH=/shared/videos
-      - TEMP_DIR=/app/temp 
-    volumes:
-      - ./videos:/shared/videos:rw
-      - type: tmpfs 
-        target: /app/temp
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    security_opt:
-      - no-new-privileges:true
 
 volumes:
   rendered_videos:
