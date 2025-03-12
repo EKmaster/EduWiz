@@ -52,7 +52,7 @@ export default function Login() {
 
     try {
       credentials = await SignInUser(email as string, password as string);
-    } catch (error: FirebaseError) {
+    } catch (error: unknown) {
       if (!(error instanceof FirebaseError)) {
         console.error(error);
         return;
