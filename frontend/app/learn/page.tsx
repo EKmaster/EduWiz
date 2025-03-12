@@ -4,21 +4,21 @@ import React, { useEffect, useState, useRef } from "react";
 import { Textarea } from "@/components/ui/textarea"
 import AutoSearch from "./AutoSearch";
 import VideoLoadingScreen from "./VideoLoadingScreen";
-import { useSearchParams } from "next/navigation";
 import { Sidesheet } from "@/components/Sidesheet";
 import { useRouter } from 'next/navigation'
 import ManimRenderService from "@/lib/ManimRenderService";
-import { Send, PanelRightOpen } from 'lucide-react';
+import { Send, Clapperboard } from 'lucide-react';
 
 
 
 export default function Home() {
-    const [sideSheetShowing, setSideSheetShowing] = useState(false);
+    const router = useRouter()
 
     const [prompt, setPrompt] = useState("");
     const jobIDRef = useRef<string | null>(null)
     const [videoGenerationState, setVideoGenerationState] = useState(0); // 0 = not started, 1 = generating, 2 = completed, -1 = error
     const jobStatusRef = useRef<string | null>(null)
+    const [jobStatus, setJobStatus] = useState<string | null>(null)
     const unsubscribeJobStatus = useRef<() => void | null>(null)
 
     const videoURLRef = useRef<string | null>(null)
@@ -32,7 +32,7 @@ export default function Home() {
             
             unsubscribeJobStatus.current = ManimRenderService.subscribeToJobStatus(id, (status) => {
                 // callback function for when status changes
-                jobStatusRef.current = status.status as string
+                setJobStatus(status.status as string)
                 if (ManimRenderService.isJobComplete(status.status as string)) {
                     setVideoGenerationState(2)
                     videoURLRef.current = ManimRenderService.getVideoUrl(jobIDRef.current as string)
@@ -50,7 +50,7 @@ export default function Home() {
         } finally {
             // TODO: remove this, it is only here now for testing purposes
             //videoURLRef.current = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
-            //etVideoGenerationState(1);
+            //setVideoGenerationState(2);
         }
     }
 
@@ -74,13 +74,19 @@ export default function Home() {
 
     return (
         <main className="h-screen">
-            <Sidesheet userID="asdfasdf" isOpen={sideSheetShowing} onOpenChange={setSideSheetShowing}></Sidesheet>
+            <Sidesheet userID="asdfasdf"></Sidesheet>
 
             {/*textbox and sent button*/}
             <div className="flex flex-col h-full justify-start" style={{ padding: '20px 20px 20px 20px', gap: "10px" }}>
                 <div className="flex flex-row items-stretch" style={{ gap: "10px" }}>
                     <div>
-                        <Button className="h-full" onClick={() => { setSideSheetShowing(true) }}><PanelRightOpen /></Button>
+                        <Button className="h-full" onClick={() => {
+                            console.log("asdfds")
+                            window.location.reload()
+                            }}>
+                                <Clapperboard />
+                                New Video
+                        </Button>
                     </div>
                     <Textarea
                         className="font-mono"
@@ -111,7 +117,7 @@ export default function Home() {
                         <AutoSearch query={prompt} />
                     ) : (videoGenerationState === 1) ? (
                         <div className="h-full flex flex-col justify-center">
-                            <VideoLoadingScreen loadingStatus={jobStatusRef.current} />
+                            <VideoLoadingScreen loadingStatus={jobStatus} />
                         </div>
                         
                     ) : ( videoGenerationState === 2) ? (
