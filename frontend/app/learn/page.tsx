@@ -1,11 +1,10 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import React, { useEffect, useState, useRef } from "react";
+import React, {useState, useRef } from "react";
 import { Textarea } from "@/components/ui/textarea"
 import AutoSearch from "./AutoSearch";
 import VideoLoadingScreen from "./VideoLoadingScreen";
 import { Sidesheet } from "@/components/Sidesheet";
-import { useRouter } from 'next/navigation'
 import ManimRenderService from "@/lib/ManimRenderService";
 import { Send, Clapperboard } from 'lucide-react';
 
