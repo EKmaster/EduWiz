@@ -25,7 +25,6 @@ export default function Home() {
     const sendPrompt = async () => {
         try {
             // TODO: un comment lines below if they are commented
-            
             const id = await ManimRenderService.submitRenderJob(prompt)
             jobIDRef.current = id
             
