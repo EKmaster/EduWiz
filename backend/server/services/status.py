@@ -26,7 +26,7 @@ def initialize_firebase():
         cred_data = json.load(f)
         project_id = cred_data["project_id"]
 
-    firebase_config = {"databaseURL": f"https://{project_id}.firebaseio.com"}
+    firebase_config = {"databaseURL": f"https://{project_id}-default-rtdb.firebaseio.com/"}
 
     
 
